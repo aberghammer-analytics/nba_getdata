@@ -1,0 +1,579 @@
+player:
+  methods:
+    get_awards:
+      season_required: False
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "PERSON_ID"
+    get_clutch:
+      season_required: True
+      lowest_grain: "GROUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "GROUP_VALUE"
+        - "GROUP_SET"
+    get_combine_stats:
+      season_required: False
+      lowest_grain: "SEASON"
+      multiple_dfs: True
+      returns_df: False 
+      id_cols:
+        - "SEASON"
+        - "PLAYER_ID"
+    get_common_info:
+      season_required: False
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: False 
+      id_cols:
+        - "PLAYER_ID"
+    get_game_splits:
+      season_required: True
+      lowest_grain: "GROUP"
+      multiple_dfs: False 
+      returns_df: True
+      id_cols:
+        - "GROUP_SET"
+    get_games_boxscore:
+      season_required: True
+      lowest_grain: "GAME"
+      multiple_dfs: False
+      returns_df: True 
+      id_cols:  
+        - "SEASON_ID"
+        - "TEAM_ID"
+        - "GAME_ID"
+    get_matchups:
+      season_required: True 
+      lowest_grain: "OPPONENT"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "SEASON_ID"
+        - "OFF_PLAYER_ID"
+        - "DEF_PLAYER_ID"
+    get_pt_pass:
+      season_required: True
+      loweset_grain: "TEAMMATE"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "GROUP_SET"
+        - "PLAYER_ID"
+        - "TEAM_ID"
+    get_pt_reb:
+      season_required: True
+      lowest_grain: "GROUP"
+      multiple_dfs: False
+      returns_df: True 
+      id_cols: 
+        - "GROUP_SET"
+        - "PLAYER_ID"
+    get_pt_shots:
+      season_required: True
+      lowest_grain: "GROUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "GROUP_SET"
+        - "PLAYER_ID"
+    get_salary:
+      season_required: False
+      lowest_grain: "SEASON"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "SEASON"
+    get_season_career_totals:
+      season_required: False 
+      lowest_grain: "SEASON"
+      multiple_dfs: True
+      returns_df: True 
+      id_cols: 
+        - "PLAYER_ID"
+        - "SEASON_ID"
+        - "TEAM_ID"
+    get_shot_chart:
+      season_required: True 
+      lowest_grain: "GROUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "GROUP_SET"
+        - "GROUP_VALUE"
+  nested_column_methods:
+team:
+  methods:  
+    get_franchise_players:
+      season_required: False
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "TEAM_ID"
+        - "PERSON_ID"
+    get_general_splits:
+      season_required: True
+      lowest_grain: "GROUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "GROUP_SET"
+        - "GROUP_VALUE"
+    get_leaders:
+      season_required: False
+      lowest_grain: "TEAM"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "TEAM_ID"
+    get_lineup_details:
+      season_required: True
+      lowest_grain: "LINEUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "GROUP_ID"
+        - "TEAM_ID"
+        - "SEASON" # lowercase: not id YYYY-YY
+    get_player_clutch:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "PLAYER_ID"
+        - "TEAM_ID"
+    get_player_hustle:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "PLAYER_ID"
+        - "TEAM_ID"
+        - "SEASON" # lowercase: not id YYYY-YY
+    get_player_matchups:
+      season_required: True
+      lowest_grain: "OPPONENT"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "SEASON_ID"
+        - "OFF_PLAYER_ID"
+        - "DEF_PLAYER_ID"
+        - "SEASON" # lowercase: not id YYYY-YY
+    get_player_on_details:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "TEAM_ID"
+        - "VS_PLAYER_ID"
+        - "SEASON" # lowercase: not id YYYY-YY
+    get_player_passes:
+      season_required: True
+      lowest_grain: "PLAYER_GROUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "PASS_TEAMMATE_PLAYER_ID"
+        - "TEAM_ID"
+    get_player_point_defend:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "CLOSE_DEF_PERSON_ID"
+        - "PLAYER_LAST_TEAM_ID"
+        - "SEASON" # lowercase: not id YYYY-YY
+    get_player_shot_locations:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "PLAYER_ID"
+        - "TEAM_ID"
+        - "SEASON" # lowercase: not id YYYY-YY
+    get_player_shots:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "PLAYER_ID"
+        - "PLAYER_LAST_TEAM_ID"
+        - "SEASON" # lowercase: not id YYYY-YY
+    get_player_stats:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "PLAYER_ID"
+        - "TEAM_ID"
+        - "SEASON" # lowercase: not id YYYY-YY
+    get_salary:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "PLAYER" # this is a name: not an id includes totals
+    get_season_lineups:
+      season_required: True
+      lowest_grain: "LINEUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "GROUP_ID" # lineup id with each player id separated by a hyphen
+        - "TEAM_ID"
+        - "SEASON" # lowercase: not id YYYY-YY
+    get_shooting_splits:
+      season_required: True
+      lowest_grain: "GROUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "GROUP_SET"
+        - "PLAYER_ID" # float: only when group value is na and group_set is Assisted By
+    get_year_by_year:
+      season_required: False
+      lowest_grain: "SEASON"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:  
+        - "TEAM_ID"
+        - "YEAR" # not an id YYYY-YY
+  exclude_methods:
+    - get_logo
+    - get_player_onoff
+    - get_roster
+    - get_opponent_shooting
+  nested_column_methods:
+    - get_player_shot_locations
+season: 
+  methods: 
+    get_defense_player:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "CLOSE_DEF_PERSON_ID"
+        - "PLAYER_LAST_TEAM_ID"
+    get_defense_team:
+      season_required: True
+      lowest_grain: "TEAM"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "TEAM_ID"
+    get_lineup_details:
+      season_required: True
+      lowest_grain: "LINEUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "GROUP_ID" # Lineup ID
+        - "TEAM_ID"
+    get_lineups:
+      season_required: True
+      lowest_grain: "LINEUP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "GROUP_ID" # Lineup ID
+        - "TEAM_ID"
+    get_opponent_shooting:
+      season_required: True
+      lowest_grain: "TEAM"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "TEAM_ID"
+    get_player_clutch:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:    
+        - "PLAYER_ID" 
+        - "TEAM_ID"
+    get_player_games:
+      season_required: True
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "GAME_ID"
+        - "PLAYER_ID" 
+        - "TEAM_ID" 
+    get_player_hustle:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "PLAYER_ID" 
+        - "TEAM_ID"
+    get_player_matchups:
+      season_required: True
+      lowest_grain: "OPPONENT"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "SEASON_ID"
+        - "OFF_PLAYER_ID"
+        - "DEF_PLAYER_ID"
+    get_player_shot_locations:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "PLAYER_ID" 
+        - "TEAM_ID"
+    get_player_shots:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "PLAYER_ID" 
+        - "PLAYER_LAST_TEAM_ID"
+    get_player_stats:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "PLAYER_ID" 
+        - "TEAM_ID"
+    get_salaries:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "PLAYER" # Not an ID: player name
+        - "SEASON" # Not an ID: YYYY_YY
+    get_synergy_player:
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "SEASON_ID"
+        - "PLAYER_ID"
+        - "TEAM_ID" 
+        - "PLAY_TYPE" # Synergy play type col
+        - "TYPE_GROUPING" # Offensive/Defensive
+    get_synergy_team:
+      season_required: True
+      lowest_grain: "TEAM"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "SEASON_ID" 
+        - "TEAM_ID"
+        - "PLAY_TYPE" # Synergy play type col
+        - "TYPE_GROUPING" # Offensive/Defensive
+    get_team_clutch:
+      season_required: True
+      lowest_grain: "TEAM"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "TEAM_ID"
+    get_team_games:
+      season_required: True
+      lowest_grain: "TEAM_GAME"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "SEASON_ID"
+        - "TEAM_ID"
+        - "GAME_ID"
+    get_team_hustle:
+      season_required: True
+      lowest_grain: "TEAM"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "TEAM_ID"
+    get_team_shot_locations:
+      season_required: True
+      lowest_grain: "TEAM"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "TEAM_ID"
+    get_team_stats:
+      season_required: True
+      lowest_grain: "TEAM"
+      multiple_dfs: False
+      returns_df: True
+      id_cols:
+        - "TEAM_ID"
+    get_tracking_player: # NEED TO ADD COL FOR TRACKING TYPE
+      season_required: True
+      lowest_grain: "PLAYER"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "PLAYER_ID" 
+        - "TEAM_ID" 
+    get_tracking_team: # NEED TO ADD COL FOR TRACKING TYPE
+      season_required: True
+      lowest_grain: "TEAM"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "TEAM_ID"
+  exclude_methods:
+    - get_player_estimated_metrics
+    - get_team_shots_bypoint
+    - get_player_shots
+  nested_column_methods:
+    - get_player_shot_locations
+    - get_team_shot_locations
+    - get_team_shots_bypoint
+  play_type_options:
+    - get_synergy_player
+    - get_synergy_team
+  tracking_options:
+    - get_tracking_player
+    - get_tracking_team
+game:
+  methods: 
+    get_advanced:
+      season_required: False # all of these game required
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONID"
+        - "GAMEID"
+        - "TEAMID"
+    get_boxscore:
+      season_required: False # all of these game required
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONID"
+        - "GAMEID"
+        - "TEAMID"
+    get_defense:
+      season_required: False # all of these game required
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONID"
+        - "GAMEID"
+        - "TEAMID"
+    get_four_factors:
+      season_required: False # all of these game required
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONID"
+        - "GAMEID"
+        - "TEAMID"
+    get_hustle:
+      season_required: False # all of these game required
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONID"
+        - "GAMEID"
+        - "TEAMID"
+    get_matchups:
+      season_required: False # all of these game required
+      lowest_grain: "MATCHUP_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONIDOFF"
+        - "PERSONIDDEF"
+        - "GAMEID"
+        - "TEAMID"
+    get_misc:
+      season_required: False # all of these game required
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONID"
+        - "GAMEID"
+        - "TEAMID"
+    get_playbyplay:
+      season_required: False # all of these game required
+      lowest_grain: "PBP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "ACTIONID"
+        - "GAMEID"
+        - "TEAMID"
+        - "PERSONID"
+    get_playertrack:
+      season_required: False # all of these game required
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONID"
+        - "GAMEID"
+        - "TEAMID"
+    get_rotations:
+      season_required: False # all of these game required
+      lowest_grain: "GAME_ROTATION"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "PERSON_ID"
+        - "GAME_ID"
+        - "TEAM_ID"
+    get_scoring:
+      season_required: False # all of these game required
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONID"
+        - "GAMEID"
+        - "TEAMID"
+    get_usage:
+      season_required: False # all of these game required
+      lowest_grain: "PLAYER_GAME"
+      multiple_dfs: True
+      returns_df: True
+      id_cols: 
+        - "PERSONID"
+        - "GAMEID"
+        - "TEAMID"
+    get_win_probability:
+      season_required: False # all of these game required
+      lowest_grain: "PBP"
+      multiple_dfs: False
+      returns_df: True
+      id_cols: 
+        - "ACTIONID"
+        - "GAMEID"
+        - "TEAMID"
+        - "PERSONID"
+  exclude_methods: 
+    - get_four_factors
+    - get_misc
+  nested_column_methods:

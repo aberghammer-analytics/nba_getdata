@@ -1,0 +1,37 @@
+{
+    "PLAYTYPES": {
+        "TRANSITION": "Transition",
+        "ISOLATION": "Isolation",
+        "ISO": "Isolation",
+        "PRBALLHANDLER": "PRBallHandler",
+        "PRROLLMAN": "PRRollman",
+        "POSTUP": "Postup",
+        "SPOTUP": "Spotup",
+        "HANDOFF": "Handoff",
+        "CUT": "Cut",
+        "OFFSCREEN": "OffScreen",
+        "PUTBACKS": "OffRebound",
+        "OFFREBOUND": "OffRebound",
+        "MISC": "Misc"
+    },
+    "TRACKING_TYPES" : {
+        "SPEEDDISTANCE": "SpeedDistance",
+        "SPEED": "SpeedDistance",
+        "DISTANCE": "SpeedDistance",
+        "POSSESSIONS": "Possessions",
+        "CATCHSHOOT": "CatchShoot",
+        "PULLUPSHOT": "PullUpShot",
+        "PULLUP": "PullUpShot",
+        "DEFENSE": "Defense",
+        "DRIVES": "Drives",
+        "DRIVE": "Drives",
+        "PASSING": "Passing",
+        "ELBOWTOUCH": "ElbowTouch",
+        "ELBOW": "ElbowTouch",
+        "POSTTOUCH": "PostTouch",
+        "POST": "PostTouch",
+        "PAINTTOUCH": "PaintTouch",
+        "PAINT": "PaintTouch",
+        "EFFICIENCY": "Efficiency"
+    }
+}
