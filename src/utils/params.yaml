@@ -251,11 +251,6 @@ team:
       id_cols:  
         - "TEAM_ID"
         - "YEAR" # not an id YYYY-YY
-  exclude_methods:
-    - get_logo
-    - get_player_onoff
-    - get_roster
-    - get_opponent_shooting
   nested_column_methods:
     - get_player_shot_locations
 season: 
@@ -437,10 +432,6 @@ season:
       returns_df: True
       id_cols: 
         - "TEAM_ID"
-  exclude_methods:
-    - get_player_estimated_metrics
-    - get_team_shots_bypoint
-    - get_player_shots
   nested_column_methods:
     - get_player_shot_locations
     - get_team_shot_locations
@@ -573,7 +564,4 @@ game:
         - "GAMEID"
         - "TEAMID"
         - "PERSONID"
-  exclude_methods: 
-    - get_four_factors
-    - get_misc
   nested_column_methods:
