@@ -1,4 +1,3 @@
-import time
 from pathlib import Path
 
 import pandas as pd
@@ -296,14 +295,3 @@ class GameIngest(Game):
             self.save_folder.joinpath(f"{self.game_id}_usage.csv"),
             index=False,
         )
-
-
-if __name__ == "__main__":
-    seasoningest = SeasonIngest("2019", "data/test/")
-    seasoningest.save_synergy_player("ISO")
-    time.sleep(1)
-    seasoningest.save_tracking_player("SPEED")
-    time.sleep(1)
-    seasoningest.save_synergy_team("ISO")
-    time.sleep(1)
-    seasoningest.save_tracking_team("SPEED")
