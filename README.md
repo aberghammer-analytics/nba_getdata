@@ -40,7 +40,7 @@ This shows a list of the data being collected, the methods used to collect the d
 
 #### Team Defense
 
-- Method: `Season.get_defense_teamr`
+- Method: `Season.get_defense_team`
 - Primary Key: `TEAM_ID` + `SEASON_ID`
 - Description: Shows team level defense
 
