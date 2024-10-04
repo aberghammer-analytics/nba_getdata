@@ -10,4 +10,5 @@ dependencies = [
     "pandas>=2.2.2",
     "ruff>=0.6.3",
     "sqlalchemy>=2.0.35",
+    "tqdm>=4.66.5",
 ]

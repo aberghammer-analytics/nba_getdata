@@ -1,10 +1,15 @@
+import json
 from pathlib import Path
+from time import sleep
 
 import pandas as pd
 from loguru import logger
 from nbastatpy.game import Game
 from nbastatpy.player import Player
 from nbastatpy.season import Season
+from tqdm import tqdm
+
+TRACKING_CONFIG_PATH = Path("src/utils/tracking_config.json")
 
 
 class PlayerIngest(Player):
@@ -27,7 +32,7 @@ class PlayerIngest(Player):
         )
 
         if not Path(self.save_folder).exists():
-            logger.info(f"Creating folder: {str(save_folder)}")
+            logger.info(f"Creating folder: {str(self.save_folder)}")
             Path(self.save_folder).mkdir(parents=True, exist_ok=True)
 
     def save_combine_stats(self):
@@ -41,6 +46,31 @@ class PlayerIngest(Player):
         df.to_csv(
             self.save_folder.joinpath(f"{str(self.id)}_common_info.csv"), index=False
         )
+
+    def save_all(self):
+        log_file = {}
+        total_tasks = 2
+        progress_bar = tqdm(total=total_tasks, desc="Progress", unit="task")
+        try:
+            progress_bar.set_description("Getting Common Info")
+            self.save_common_info()
+            progress_bar.update(1)
+            sleep(1)
+        except Exception as e:
+            log_file["common_info"] = str(e)
+            logger.error(f"common_info: {str(e)}")
+
+        try:
+            progress_bar.set_description("Getting Combine Stats")
+            self.save_combine_stats()
+            progress_bar.update(1)
+        except Exception as e:
+            log_file["combine"] = str(e)
+            logger.error(f"combine: {str(e)}")
+
+        progress_bar.close()
+        with open(self.save_folder.joinpath("log.json"), "w") as json_file:
+            json.dump(log_file, json_file, indent=4)
 
 
 class SeasonIngest(Season):
@@ -59,7 +89,7 @@ class SeasonIngest(Season):
         )
 
         if not Path(self.save_folder).exists():
-            logger.info(f"Creating folder: {str(save_folder)}")
+            logger.info(f"Creating folder: {str(self.save_folder)}")
             Path(self.save_folder).mkdir(parents=True, exist_ok=True)
 
     def save_defense_player(self):
@@ -215,6 +245,101 @@ class SeasonIngest(Season):
             index=False,
         )
 
+    def save_all_nonsynergy(self):
+        log_file = {}
+        total_tasks = 18
+        progress_bar = tqdm(total=total_tasks, desc="Progress", unit="task")
+
+        steps = [
+            ("Getting Player Defense", self.save_defense_player),
+            ("Getting Team Defense", self.save_defense_team),
+            ("Getting Lineup Details", self.save_lineup_details),
+            ("Getting Lineups", self.save_lineups),
+            ("Getting Opponent Shooting", self.save_opponent_shooting),
+            ("Getting Player Clutch", self.save_player_clutch),
+            ("Getting Player Games", self.save_player_games),
+            ("Getting Player Hustle", self.save_player_hustle),
+            ("Getting Player Matchups", self.save_player_matchups),
+            ("Getting Player Shot Locations", self.save_player_shot_locations),
+            ("Getting Player Shots", self.save_player_shots),
+            ("Getting Player Stats", self.save_player_stats),
+            ("Getting Salaries", self.save_salaries),
+            ("Getting Team Clutch", self.save_team_clutch),
+            ("Getting Team Games", self.save_team_games),
+            ("Getting Team Hustle", self.save_team_hustle),
+            ("Getting Team Shot Locations", self.save_team_shot_locations),
+            ("Getting Team Stats", self.save_team_stats),
+        ]
+
+        for desc, func in steps:
+            try:
+                progress_bar.set_description(desc)
+                func()  # Call the corresponding save function
+                progress_bar.update(1)
+                sleep(1)
+            except Exception as e:
+                logger.error(f"An error occurred in {desc}: {e}")
+                log_file[str(desc)] = str(e)
+                # Optionally, handle the error differently if needed
+
+        progress_bar.close()
+        with open(self.save_folder.joinpath("log_nonsynergy.json"), "w") as json_file:
+            json.dump(log_file, json_file, indent=4)
+
+    def save_all_synergy(self):
+        log_file = {}
+        tracking_config = json.loads(TRACKING_CONFIG_PATH.read_text())
+        tracking_types = list(tracking_config["TRACKING_TYPES"].values())
+        play_types = list(tracking_config["PLAYTYPES"].values())
+
+        total_tasks = len(play_types)
+        progress_bar = tqdm(total=total_tasks, desc="Progress", unit="task")
+
+        for play_type in play_types:
+            try:
+                progress_bar.set_description(f"Getting Player {play_type}")
+                self.save_synergy_player(play_type)
+                sleep(1)
+            except Exception as e:
+                log_file[str(play_type) + "_player"] = str(e)
+                logger.error(f"{play_type}_PLAYER: {str(e)}")
+
+            try:
+                progress_bar.set_description(f"Getting Team {play_type}")
+                self.save_synergy_team(play_type)
+                progress_bar.update(1)
+                sleep(1)
+            except Exception as e:
+                log_file[str(play_type) + "_team"] = str(e)
+                logger.error(f"{play_type}_TEAM: {str(e)}")
+
+        progress_bar.close()
+
+        total_tasks = len(tracking_types)
+        progress_bar = tqdm(total=total_tasks, desc="Progress", unit="task")
+
+        for tracking_type in tracking_types:
+            try:
+                progress_bar.set_description(f"Getting Player {tracking_type}")
+                self.save_tracking_player(tracking_type)
+                sleep(1)
+            except Exception as e:
+                log_file[str(tracking_type) + "_player"] = str(e)
+                logger.error(f"{tracking_type}: {str(e)}")
+
+            try:
+                progress_bar.set_description(f"Getting Team {tracking_type}")
+                self.save_tracking_team(tracking_type)
+                progress_bar.update(1)
+                sleep(1)
+            except Exception as e:
+                log_file[str(tracking_type) + "_team"] = str(e)
+                logger.error(f"{tracking_type}: {str(e)}")
+
+        progress_bar.close()
+        with open(self.save_folder.joinpath("log_synergy.json"), "w") as json_file:
+            json.dump(log_file, json_file, indent=4)
+
 
 class GameIngest(Game):
     def __init__(
@@ -230,7 +355,7 @@ class GameIngest(Game):
         )
 
         if not Path(self.save_folder).exists():
-            logger.info(f"Creating folder: {str(save_folder)}")
+            logger.info(f"Creating folder: {str(self.save_folder)}")
             Path(self.save_folder).mkdir(parents=True, exist_ok=True)
 
     def save_advanced(self):
@@ -295,3 +420,40 @@ class GameIngest(Game):
             self.save_folder.joinpath(f"{self.game_id}_usage.csv"),
             index=False,
         )
+
+    def save_all(self):
+        log_file = {}
+        total_tasks = 9
+        progress_bar = tqdm(total=total_tasks, desc="Progress", unit="task")
+
+        steps = [
+            ("Getting Advanced", self.save_advanced),
+            ("Getting Defense", self.save_defense),
+            ("Getting Hustle", self.save_hustle),
+            ("Getting Matchups", self.save_matchups),
+            ("Getting Play by Play", self.save_playbyplay),
+            ("Getting Tracking", self.save_tracking),
+            ("Getting Rotations", self.save_rotations),
+            ("Getting Scoring", self.save_scoring),
+            ("Getting Usage", self.save_usage),
+        ]
+
+        for desc, func in steps:
+            try:
+                progress_bar.set_description(desc)
+                func()  # Call the corresponding save function
+                progress_bar.update(1)
+                sleep(1)
+            except Exception as e:
+                logger.error(f"An error occurred in {desc}: {e}")
+                log_file[str(desc)] = str(e)
+                # Optionally, you can handle specific exceptions or log them differently
+
+        progress_bar.close()
+        with open(self.save_folder.joinpath("log.json"), "w") as json_file:
+            json.dump(log_file, json_file, indent=4)
+
+
+if __name__ == "__main__":
+    player = SeasonIngest("1972", "")
+    player.save_all_nonsynergy()
