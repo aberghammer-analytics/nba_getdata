@@ -20,6 +20,7 @@ class PlayerIngest(Player):
         season_year: str = None,
         playoffs: bool = False,
         permode: str = "PERGAME",
+        verbose: bool = False,
     ):
         super().__init__(
             player=player, season_year=season_year, playoffs=playoffs, permode=permode
@@ -32,7 +33,8 @@ class PlayerIngest(Player):
         )
 
         if not Path(self.save_folder).exists():
-            logger.info(f"Creating folder: {str(self.save_folder)}")
+            if verbose:
+                logger.info(f"Creating folder: {str(self.save_folder)}")
             Path(self.save_folder).mkdir(parents=True, exist_ok=True)
 
     def save_combine_stats(self):
@@ -47,7 +49,7 @@ class PlayerIngest(Player):
             self.save_folder.joinpath(f"{str(self.id)}_common_info.csv"), index=False
         )
 
-    def save_all(self):
+    def save_all(self, verbose: bool = False):
         log_file = {}
         total_tasks = 2
         progress_bar = tqdm(total=total_tasks, desc="Progress", unit="task")
@@ -66,7 +68,8 @@ class PlayerIngest(Player):
             progress_bar.update(1)
         except Exception as e:
             log_file["combine"] = str(e)
-            logger.error(f"combine: {str(e)}")
+            if verbose:
+                logger.error(f"combine: {str(e)}")
 
         progress_bar.close()
         with open(self.save_folder.joinpath("log.json"), "w") as json_file:
@@ -80,6 +83,7 @@ class SeasonIngest(Season):
         save_folder: Path,
         playoffs=False,
         permode: str = "PERGAME",
+        verbose: bool = False,
     ):
         super().__init__(season_year=season_year, playoffs=playoffs, permode=permode)
 
@@ -89,7 +93,8 @@ class SeasonIngest(Season):
         )
 
         if not Path(self.save_folder).exists():
-            logger.info(f"Creating folder: {str(self.save_folder)}")
+            if verbose:
+                logger.info(f"Creating folder: {str(self.save_folder)}")
             Path(self.save_folder).mkdir(parents=True, exist_ok=True)
 
     def save_defense_player(self):
@@ -245,7 +250,7 @@ class SeasonIngest(Season):
             index=False,
         )
 
-    def save_all_nonsynergy(self):
+    def save_all_nonsynergy(self, verbose: bool = False):
         log_file = {}
         total_tasks = 18
         progress_bar = tqdm(total=total_tasks, desc="Progress", unit="task")
@@ -278,7 +283,8 @@ class SeasonIngest(Season):
                 progress_bar.update(1)
                 sleep(1)
             except Exception as e:
-                logger.error(f"An error occurred in {desc}: {e}")
+                if verbose:
+                    logger.error(f"An error occurred in {desc}: {e}")
                 log_file[str(desc)] = str(e)
                 # Optionally, handle the error differently if needed
 
@@ -286,7 +292,7 @@ class SeasonIngest(Season):
         with open(self.save_folder.joinpath("log_nonsynergy.json"), "w") as json_file:
             json.dump(log_file, json_file, indent=4)
 
-    def save_all_synergy(self):
+    def save_all_synergy(self, verbose: bool = False):
         log_file = {}
         tracking_config = json.loads(TRACKING_CONFIG_PATH.read_text())
         tracking_types = list(tracking_config["TRACKING_TYPES"].values())
@@ -302,7 +308,8 @@ class SeasonIngest(Season):
                 sleep(1)
             except Exception as e:
                 log_file[str(play_type) + "_player"] = str(e)
-                logger.error(f"{play_type}_PLAYER: {str(e)}")
+                if verbose:
+                    logger.error(f"{play_type}_PLAYER: {str(e)}")
 
             try:
                 progress_bar.set_description(f"Getting Team {play_type}")
@@ -311,7 +318,8 @@ class SeasonIngest(Season):
                 sleep(1)
             except Exception as e:
                 log_file[str(play_type) + "_team"] = str(e)
-                logger.error(f"{play_type}_TEAM: {str(e)}")
+                if verbose:
+                    logger.error(f"{play_type}_TEAM: {str(e)}")
 
         progress_bar.close()
 
@@ -325,7 +333,8 @@ class SeasonIngest(Season):
                 sleep(1)
             except Exception as e:
                 log_file[str(tracking_type) + "_player"] = str(e)
-                logger.error(f"{tracking_type}: {str(e)}")
+                if verbose:
+                    logger.error(f"{tracking_type}: {str(e)}")
 
             try:
                 progress_bar.set_description(f"Getting Team {tracking_type}")
@@ -334,7 +343,8 @@ class SeasonIngest(Season):
                 sleep(1)
             except Exception as e:
                 log_file[str(tracking_type) + "_team"] = str(e)
-                logger.error(f"{tracking_type}: {str(e)}")
+                if verbose:
+                    logger.error(f"{tracking_type}: {str(e)}")
 
         progress_bar.close()
         with open(self.save_folder.joinpath("log_synergy.json"), "w") as json_file:
@@ -342,11 +352,7 @@ class SeasonIngest(Season):
 
 
 class GameIngest(Game):
-    def __init__(
-        self,
-        game_id: str,
-        save_folder: Path,
-    ):
+    def __init__(self, game_id: str, save_folder: Path, verbose: bool = False):
         super().__init__(game_id=game_id)
         self.game_id = game_id
 
@@ -355,7 +361,8 @@ class GameIngest(Game):
         )
 
         if not Path(self.save_folder).exists():
-            logger.info(f"Creating folder: {str(self.save_folder)}")
+            if verbose:
+                logger.info(f"Creating folder: {str(self.save_folder)}")
             Path(self.save_folder).mkdir(parents=True, exist_ok=True)
 
     def save_advanced(self):
@@ -421,7 +428,7 @@ class GameIngest(Game):
             index=False,
         )
 
-    def save_all(self):
+    def save_all(self, verbose: bool = False):
         log_file = {}
         total_tasks = 9
         progress_bar = tqdm(total=total_tasks, desc="Progress", unit="task")
@@ -445,15 +452,11 @@ class GameIngest(Game):
                 progress_bar.update(1)
                 sleep(1)
             except Exception as e:
-                logger.error(f"An error occurred in {desc}: {e}")
+                if verbose:
+                    logger.error(f"An error occurred in {desc}: {e}")
                 log_file[str(desc)] = str(e)
                 # Optionally, you can handle specific exceptions or log them differently
 
         progress_bar.close()
         with open(self.save_folder.joinpath("log.json"), "w") as json_file:
             json.dump(log_file, json_file, indent=4)
-
-
-if __name__ == "__main__":
-    player = SeasonIngest("1972", "")
-    player.save_all_nonsynergy()
